@@ -220,7 +220,7 @@ html, body { overflow-x: hidden; } /* stops any stray element from causing sidew
 .pd-variant-btn.on{border-color:var(--g);background:var(--g);color:#fff}
 .pd-price{font-size:22px;margin-bottom:6px}
 .pd-stock{color:var(--g);margin-bottom:18px;font-size:13px}
-.d-stocks{color:var(--g);margin-bottom:18px;font-size:13px}
+.d-stocks{color:var(--g);margin-bottom:18px;font-size:15px;font-weight:600}
 .pd-stock.out{color:#b33}
 .pd-qty-row{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
 .pd-qty{border:1px solid var(--ln);border-radius:4px;padding:4px 10px}

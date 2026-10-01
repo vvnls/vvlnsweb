@@ -8,5 +8,3 @@ export const getProducts = (params = {}) =>
 export const getProduct = (slug) =>
   api.get(`/products/${slug}`).then((r) => r.data.product);
 
-export const getReviews = (slug) =>
-  api.get(`/products/${slug}/reviews`).then((r) => r.data);

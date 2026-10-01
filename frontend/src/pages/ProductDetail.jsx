@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { getProduct, getReviews } from '../api/products';
+import { getProduct } from '../api/products';
+import { getReviewsFor } from '../content/reviews';
 import { useCartStore } from '../store/cartStore';
 import { useToast } from '../components/ui/Toast';
 import ReviewList from '../components/product/ReviewList';
@@ -22,9 +23,8 @@ export default function ProductDetail() {
     setNotFound(false);
     setVariantIdx(0);
     setQty(1);
-    setReviewData({ reviews: [], average: 0, total: 0 });
+    setReviewData(getReviewsFor(slug));
     getProduct(slug).catch(() => setNotFound(true)).then((p) => p && setProduct(p));
-    getReviews(slug).then(setReviewData).catch(() => {});
   }, [slug]);
 
   if (notFound) {
@@ -71,8 +71,11 @@ export default function ProductDetail() {
 
           <div className="pr pd-price">{onSale && <s>₹{v.mrp}</s>}₹{v.price}</div>
           <p className={`pd-stock${v.stock > 0 ? '' : ' out'}`}>
-            {v.stock > 0 ? `In stock (${v.stock} left)` : 'Out of stock  '}
-            <span className="d-stocks">past month 500+ bought</span>
+            {v.stock > 0 ? `In stock (${v.stock} left)` : 'Out of stock  '} <br />
+            <span className="d-stocks">past month 500+ bought</span> <br />
+            {v.mrp && v.mrp > v.price && (v.mrp - v.price) / v.mrp * 100 > 0 && (
+              <span className="d-stocks"> - {Math.round((v.mrp - v.price) / v.mrp * 100)}% off you saved ₹{Math.round(v.mrp - v.price)}</span>
+            )}
           </p>
 
           {v.stock > 0 && (

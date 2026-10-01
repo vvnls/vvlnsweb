@@ -24,7 +24,7 @@ const pool = [
 await connectDB();
 const products = await Product.find({ deletedAt: null });
 if (!products.length) {
-  console.log('No products found. Run npm run seed first.');
+  console.log('No products found.');
   process.exit(1);
 }
 

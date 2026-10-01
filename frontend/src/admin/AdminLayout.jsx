@@ -13,7 +13,7 @@ export default function AdminLayout() {
   return (
     <div className="admin">
       <aside className="admin-side">
-        <div className="admin-logo">Vedvisha Admin</div>
+        <div className="admin-logo">Vedvishwa Admin</div>
         <nav>
           <NavLink to="/admin" end>Dashboard</NavLink>
           <NavLink to="/admin/products">Products</NavLink>

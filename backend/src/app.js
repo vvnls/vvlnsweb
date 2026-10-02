@@ -13,6 +13,13 @@ import routes from './routes/index.js';
 
 const app = express();
 
+app.set('trust proxy', 1);
+
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true,
+}));
+
 app.set('trust proxy', 1); // needed behind Cloudflare / Render for correct client IPs
 app.use(helmet());
 app.use(cors({ origin: [env.CLIENT_URL], credentials: true }));

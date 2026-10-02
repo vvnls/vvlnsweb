@@ -32,7 +32,7 @@ export async function issueRefreshToken(user, req, family = crypto.randomUUID())
 const base = {
   httpOnly: true,
   secure: isProd,
-  sameSite: 'lax',
+  sameSite: isProd ? 'none' : 'lax',
   ...(env.COOKIE_DOMAIN && { domain: env.COOKIE_DOMAIN }),
 };
 

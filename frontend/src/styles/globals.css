@@ -44,7 +44,7 @@ li:hover>.dd,li:focus-within>.dd{display:block}.dd a{display:block;padding:8px 2
 .gr{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .cd{border:1px solid var(--ln);border-radius:6px;background:#fff;display:flex;flex-direction:column;position:relative;transition:.2s}.cd:hover{box-shadow:0 8px 20px rgba(0,0,0,.1)}
 .sale{position:absolute;top:10px;left:10px;background:var(--y);color:#222;font-weight:700;font-size:11.5px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;z-index:1}
-.im{height:190px;position:relative;border-radius:6px 6px 0 0;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#f6f7f3}.im::after{width:70px;height:100px;left:50%;top:50%;margin:-50px 0 0 -35px;transform:rotate(-20deg)}
+.im{height:190px;position:relative;border-radius:6px 6px 0 0}.im::after{width:70px;height:100px;left:50%;top:50%;margin:-50px 0 0 -35px;transform:rotate(-20deg)}
 .in{padding:12px 14px 6px;display:flex;flex-direction:column;flex:1}.in small{color:var(--mut);font-size:12px}.in h4{font-size:14px;font-weight:500;line-height:1.35;margin:2px 0 6px}
 .pr{margin-top:auto;font-weight:600;color:var(--gd);font-size:15px}.pr s{color:var(--mut);font-weight:400;font-size:13px;margin-right:6px}
 .ad{margin:8px 14px 14px;padding:9px;background:var(--g);color:#fff;border-radius:4px;font-weight:500}.ad:hover{background:var(--gd)}
@@ -213,7 +213,7 @@ html, body { overflow-x: hidden; } /* stops any stray element from causing sidew
 
 /* ---- product detail page ---- */
 .pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.pd-img{height:500px;border-radius:8px;width:80%;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#f6f7f3}
+.pd-img{height:500px;border-radius:8px;width:80%}
 .pd-title{font-family:Lora,serif;font-size:28px;margin:6px 0 12px;line-height:1.2}
 .pd-variants{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .pd-variant-btn{padding:8px 16px!important;width:auto!important}
@@ -276,7 +276,7 @@ html, body { overflow-x: hidden; } /* stops any stray element from causing sidew
 /* ---- product image gallery ---- */
 .pd-gallery{display:flex;flex-direction:column;gap:10px}
 .pd-thumbs{display:flex;gap:8px;flex-wrap:wrap}
-.pd-thumb { width: 100%; aspect-ratio: 1 / 1; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.pd-thumb{width:64px;height:64px;border-radius:6px;background-size:cover;background-position:center;border:2px solid var(--ln);flex-shrink:0}
 .pd-thumb.on{border-color:var(--g)}
 .pd-thumb:hover{border-color:var(--g)}
 

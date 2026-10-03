@@ -36,11 +36,14 @@ export default function Footer() {
           </div>
         </div>
         <p className="dc">
-          <b>Disclaimer:</b> Health information on this site is for basic information only and is not medical advice. Consult your physician before using any herb, especially during pregnancy or while on medication.<br />
+          <b>Disclaimer:</b> Health information on this site is for basic information only and is not medical advice. Consult your physician before using any herb, especially during pregnancy or while on medication.<b /> <br />
           {SITE.fssai && <>FSSAI Lic. No. {SITE.fssai} · </>}
           {SITE.gstin && <>GSTIN {SITE.gstin} · </>}
           Copyright {new Date().getFullYear()} © {SITE.legalName}. All rights reserved.
-        </p>
+        </p> <br />
+        <p>
+          Website by <a href="https://phanirajbnportfolio.vercel.app" target="_blank" rel="noopener noreferrer">Phaniraj</a>
+        </p> <br />
       </div>
     </footer>
   );

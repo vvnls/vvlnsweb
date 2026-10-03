@@ -8,6 +8,7 @@ export default function Home() {
       <Hero />
       <CategoryGrid />
       <ProductSection title="Combos" params={{ category: 'combo' }} />
+      <ProductSection title="best sellers" params={{ sort: 'bestselling' }} />
       <ProductSection title="Hair care essentials" params={{ category: 'hair-care' }} />
       <ProductSection title="New launches" params={{ sort: 'newest' }} />
     </>

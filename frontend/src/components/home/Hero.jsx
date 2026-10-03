@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Icon from '../ui/Icon';
+import heroArt from '../../assets/images/hero-arts.png';
 
 const FEATURES = [
   ['leaf', 'Promotes Wellness'],
@@ -34,7 +35,9 @@ export default function Hero() {
           <Link className="btn hero2-cta" to="/shop">Shop All Products <Icon name="arrow" size={16} /></Link>
         </div>
         <div className="hero2-art">
-          <div className="hero2-art-box" />
+          <div className="hero2-art-box">
+            <img src={heroArt} alt="Vedvishwa Naturals" className="hero2-art-img" />
+          </div>
           <div className="hero2-badge">
             <span>100%</span>
             <b>NATURAL</b>

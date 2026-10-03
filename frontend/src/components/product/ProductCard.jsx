@@ -12,9 +12,7 @@ export default function ProductCard({ product }) {
     <article className="cd">
       {/* {onSale && <span className="sale">Sale!</span>} */}
       <Link to={`/product/${product.slug}`}>
-        <div className="im" style={{ background: product.images?.[0]
-          ? `url(${product.images[0].url}) center/cover`
-          : 'linear-gradient(150deg,#4f7d2c,#1a2c12)' }} />
+        <div className="im" style={{ backgroundImage: product.images?.[0] ? `url(${product.images[0].url})` : 'linear-gradient(150deg,#4f7d2c,#1a2c12)' }} />
       </Link>
       <div className="in">
         <small>{product.category?.name}</small>

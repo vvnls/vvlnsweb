@@ -4,6 +4,7 @@ import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
 import { getProducts } from '../../api/products';
 import Icon from '../ui/Icon';
+import favicon from '../../../src/assets/favicon.png';
 
 export default function Header({ onCartClick }) {
   const [q, setQ] = useState('');
@@ -46,7 +47,7 @@ export default function Header({ onCartClick }) {
     <header className="hd">
       <div className="w bar">
         <Link to="/" className="logo2">
-          <span className="logo2-icon"><Icon name="leaf" size={26} /></span>
+          <span className="logo2-icon"><img src={favicon} alt="Vedvishwa Naturals" /></span>
           <span>
             <span className="logo2-name">Vedvishwa<br />Naturals</span>
             <small>PURE HERBS · NATURAL WELLNESS · NATURALLY YOU</small>

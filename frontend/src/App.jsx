@@ -47,6 +47,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <ToastProvider>
+         <ScrollToTop />
         <TopBar />
         <div className="hd-stack">
           <Header onCartClick={() => setCartOpen(true)} />

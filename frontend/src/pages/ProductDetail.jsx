@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { getProduct } from '../api/products';
 import { getReviewsFor } from '../content/reviews';
@@ -10,6 +10,7 @@ import ImageGallery from '../components/product/ImageGallery';
 
 export default function ProductDetail() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [variantIdx, setVariantIdx] = useState(0);
@@ -85,7 +86,10 @@ export default function ProductDetail() {
                 {qty}
                 <button onClick={() => setQty((n) => Math.min(maxQty, n + 1))} aria-label="More">+</button>
               </div>
-              <button className="btn pd-add" onClick={onAdd}>Add to cart</button>
+              <div className="pd-actions">
+                <button className="btn pd-add" onClick={onAdd}>Add to cart</button>
+                <button className="btn pd-add pd-buy" onClick={() => { onAdd(); navigate('/checkout'); }}>Buy Now</button>
+              </div>
             </div>
           )}
 

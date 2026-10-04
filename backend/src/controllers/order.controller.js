@@ -68,7 +68,7 @@ async function cancelOrder(orderId, { by, reason, allowedFrom, userFilter = {} }
   try {
     await session.withTransaction(async () => {
       // only one caller can flip a cancellable order, so stock is restored exactly once
-           order = await Order.findOneAndUpdate(
+      order = await Order.findOneAndUpdate(
         { _id: orderId, ...userFilter, status: { $in: allowedFrom } },
         {
           $set: { status: 'cancelled', cancelledAt: new Date(), cancelledBy: by, cancelReason: reason },
@@ -106,40 +106,41 @@ export const cancelMyOrder = asyncHandler(async (req, res) => {
 });
 
 export const createOrder = asyncHandler(async (req, res) => {
-  const { items: rawItems, shippingAddress, paymentMethod } = req.body;
+  const { items: rawItems, shippingAddress, paymentMethod, email } = req.body;
   const items = await buildOrderItems(rawItems); // checks stock, doesn't touch it yet
   const subtotal = items.reduce((n, i) => n + i.price * i.qty, 0);
   const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
   const codCharge = paymentMethod === 'cod' ? COD_CHARGE : 0;
   const total = subtotal + shippingFee + codCharge;
 
-    if (paymentMethod === 'cod') {
+  if (paymentMethod === 'cod') {
     const invoiceNumber = await nextInvoiceNumber();
     const session = await mongoose.startSession();
     let order;
     await session.withTransaction(async () => {
       await decrementStock(items, session);
       [order] = await Order.create([{
-        user: req.user._id, items, shippingAddress, subtotal, shippingFee, codCharge, total,
+        user: req.user?._id, guestEmail: req.user ? undefined : email,
+        items, shippingAddress, subtotal, shippingFee, codCharge, total,
         paymentMethod, paymentStatus: 'pending', status: 'placed',
         invoiceNumber, invoiceDate: new Date(),
         statusHistory: [{ status: 'placed', at: new Date() }],
       }], { session });
     });
     session.endSession();
-    sendOrderConfirmationEmail(req.user.email, order).catch((e) => console.error('Email error:', e));
+    sendOrderConfirmationEmail(req.user?.email || email, order).catch((e) => console.error('Email error:', e));
     return res.status(201).json({ status: 'success', order });
   }
 
   // razorpay: nothing is saved to the database yet. If the payment fails or the person closes the checkout window, no order row is ever created for it.
   if (!razorpayEnabled) throw new AppError('Online payment is not available right now. Please choose Cash on Delivery.', 400);
-  const receipt = `rcpt_${req.user._id}_${Date.now()}`;
+  const receipt = `rcpt_${req.user?._id || 'guest'}_${Date.now()}`;
   const rpOrder = await createRazorpayOrder(total, receipt);
   res.status(201).json({ status: 'success', razorpayOrderId: rpOrder.id, amount: rpOrder.amount, keyId: env.RAZORPAY_KEY_ID });
 });
 
 export const verifyPayment = asyncHandler(async (req, res) => {
-  const { items: rawItems, shippingAddress, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const { items: rawItems, shippingAddress, razorpay_order_id, razorpay_payment_id, razorpay_signature, email } = req.body;
 
   if (!verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature)) {
     throw new AppError('Payment verification failed', 400);
@@ -157,13 +158,14 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     throw new AppError('Order amount mismatch. Please contact support before retrying.', 400);
   }
 
-    const invoiceNumber = await nextInvoiceNumber();
+  const invoiceNumber = await nextInvoiceNumber();
   const session = await mongoose.startSession();
   let order;
   await session.withTransaction(async () => {
     await decrementStock(items, session);
-    [order] = await Order.create([{
-      user: req.user._id, items, shippingAddress, subtotal, shippingFee, codCharge: 0, total,
+        [order] = await Order.create([{
+      user: req.user?._id, guestEmail: req.user ? undefined : email,
+      items, shippingAddress, subtotal, shippingFee, codCharge: 0, total,
       paymentMethod: 'razorpay', paymentStatus: 'paid', status: 'placed',
       invoiceNumber, invoiceDate: new Date(),
       razorpayOrderId: razorpay_order_id, razorpayPaymentId: razorpay_payment_id,
@@ -172,7 +174,7 @@ export const verifyPayment = asyncHandler(async (req, res) => {
   });
   session.endSession();
 
-  sendOrderConfirmationEmail(req.user.email, order).catch((e) => console.error('Email error:', e));
+  sendOrderConfirmationEmail(req.user?.email || email, order).catch((e) => console.error('Email error:', e));
   res.json({ status: 'success', order });
 });
 

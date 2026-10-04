@@ -3,11 +3,12 @@ export const SITE = {
   name: 'Vedvishwa Naturals',
   legalName: 'Vedvishwa Naturals', // registered business name
   email: 'vedvishwaofficial@gmail.com',
-  phone: '8767202430', // leave empty to hide it
+  phone: '8767202430', 
+  whatsapp: '918767202430', 
   website: 'https://vedvishwanaturals.com',
   address: 'Near Yes Bank, Indapur, Pune, Maharashtra 413106',
   gstin: '27DDRPP7987J1Z9',
-  fssai: '', // fill in if the business holds an FSSAI licence, shown in the footer
+  fssai: '', 
   grievance: { name: 'To be added', designation: 'Grievance Officer', email: 'vedvishwaofficial@gmail.com' },
   jurisdiction: 'Pune, Maharashtra, India',
 

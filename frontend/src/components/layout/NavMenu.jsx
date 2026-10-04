@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useCategories } from '../../hooks/useCategories';
+import { useAuthStore } from '../../store/authStore';
 import Icon from '../ui/Icon';
 
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
   const categories = useCategories();
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   return (
     <nav className={`nav2${open ? ' open' : ''}`}>
@@ -19,6 +22,19 @@ export default function NavMenu() {
               <Link to={`/shop?category=${c.slug}`}>{c.name} <Icon name="arrow" size={11} className="nav2-caret" /></Link>
             </li>
           ))}
+          <li><Link to="/track-order">Track Order</Link></li>
+          {user ? (
+            <>
+              <li><Link to="/account/orders">My Orders</Link></li>
+              <li><Link to="/account">My Account</Link></li>
+              <li><button onClick={async () => { await logout(); navigate('/'); setOpen(false); }}>Logout</button></li>
+            </>
+          ) : (
+            <>
+              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/register">Sign Up</Link></li>
+            </>
+          )}
           <li><a href="#reviews">Reviews</a></li>
           <li><a href="#ft">Contact Us</a></li>
         </ul>

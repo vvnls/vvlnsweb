@@ -20,7 +20,8 @@ const itemSchema = new mongoose.Schema({
 }, { _id: false });
 
 const orderSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
+  guestEmail: { type: String, trim: true, lowercase: true },
   items: { type: [itemSchema], validate: [(v) => v.length > 0, 'Order must have at least one item'] },
   shippingAddress: { type: addressSchema, required: true },
   subtotal: { type: Number, required: true },

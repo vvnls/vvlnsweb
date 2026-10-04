@@ -26,6 +26,7 @@ import Policy from './pages/Policy';
 import ScrollToTop from './components/ui/ScrollToTop';
 import TrackOrder from './pages/TrackOrder';
 import BulkOrder from './pages/BulkOrder';
+import WhatsAppButton from './components/ui/WhatsAppButton';
 
 const AdminLayout = lazy(() => import('./admin/AdminLayout'));
 const Dashboard = lazy(() => import('./admin/pages/Dashboard'));
@@ -47,7 +48,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <ToastProvider>
-         <ScrollToTop />
+        <ScrollToTop />
         <TopBar />
         <div className="hd-stack">
           <Header onCartClick={() => setCartOpen(true)} />
@@ -64,12 +65,12 @@ export default function App() {
           <Route path="/policy/:slug" element={<Policy />} />
           <Route path="/bulk-order" element={<BulkOrder />} />
 
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-success/:id" element={<OrderSuccess />} />
+          <Route path="/track-order" element={<TrackOrder />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/account" element={<Account />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/order-success/:id" element={<OrderSuccess />} />
             <Route path="/account/orders" element={<Orders />} />
-            <Route path="/track-order" element={<TrackOrder />} />
           </Route>
           <Route element={<RequireAdmin />}>
             <Route path="/admin" element={<Suspense fallback={<p style={{ padding: 40 }}>Loading…</p>}><AdminLayout /></Suspense>}>
@@ -91,6 +92,7 @@ export default function App() {
         </Routes>
         <Footer />
         <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+        <WhatsAppButton />
       </ToastProvider>
     </HelmetProvider>
   );

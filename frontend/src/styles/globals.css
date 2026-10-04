@@ -397,3 +397,27 @@ html, body { overflow-x: hidden; } /* stops any stray element from causing sidew
 @media(max-width:640px){
   .admin-stat-grid{grid-template-columns:repeat(2,1fr);max-width:none}
 }
+
+/* ---- buy now buttons ---- */
+.cd-actions{display:flex;gap:8px;margin:0 14px 14px}
+.cd-actions .ad{margin:0;flex:1}
+.ad-buy{background:var(--y);color:#222}
+.ad-buy:hover{background:var(--yl)}
+
+.pd-actions{display:flex;gap:10px;flex-wrap:wrap}
+.pd-buy{background:var(--y);color:#222}
+.pd-buy:hover{background:var(--yl)}
+
+@media(max-width:480px){
+  .cd-actions{flex-direction:column}
+}
+
+/* ---- floating whatsapp button ---- */
+.wa-float{position:fixed;right:18px;bottom:18px;width:54px;height:54px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:90;transition:.2s}
+.wa-float:hover{background:#1ebe5b;transform:scale(1.05)}
+@media(max-width:480px){
+  .wa-float{width:48px;height:48px;right:14px;bottom:14px}
+}
+
+.nav2>.w>ul>li>button{display:flex;align-items:center;gap:4px;padding:13px 16px;color:var(--ink);font-weight:500;font-size:13.5px;width:100%;text-align:left}
+.nav2>.w>ul>li>button:hover{color:var(--g)}

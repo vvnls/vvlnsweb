@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCartStore } from '../../store/cartStore';
 import { useToast } from '../ui/Toast';
 
 export default function ProductCard({ product }) {
   const add = useCartStore((s) => s.add);
+  const navigate = useNavigate();
   const toast = useToast();
   const v = product.variants[0];
   const onSale = v.mrp && v.mrp > v.price;
@@ -22,9 +23,14 @@ export default function ProductCard({ product }) {
           {product.maxPrice > product.minPrice ? ` – ₹${product.maxPrice}` : ''}
         </div>
       </div>
-      <button className="ad" onClick={() => { add(product, v); toast(`${product.title} added to cart`); }}>
-        Add to cart
-      </button>
+      <div className="cd-actions">
+        <button className="ad" onClick={() => { add(product, v); toast(`${product.title} added to cart`); }}>
+          Add to cart
+        </button>
+        <button className="ad ad-buy" onClick={() => { add(product, v); navigate('/checkout'); }}>
+          Buy Now
+        </button>
+      </div>
     </article>
   );
 }

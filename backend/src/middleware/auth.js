@@ -16,6 +16,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     throw new AppError('Session expired', 401);
   }
 
+
   // re-check the database so disabling or demoting a user takes effect immediately
   const user = await User.findById(payload.sub);
   if (!user || !user.isActive || user.tokenVersion !== payload.tv) {
@@ -33,3 +34,16 @@ export const authorize = (...roles) => (req, res, next) => {
   }
   next();
 };
+
+export const optionalAuth = asyncHandler(async (req, res, next) => {
+    const token = req.cookies?.access_token;
+    if (!token) return next();
+    try {
+      const payload = jwt.verify(token, env.JWT_ACCESS_SECRET);
+      const user = await User.findById(payload.sub);
+      if (user && user.isActive && user.tokenVersion === payload.tv) req.user = user;
+    } catch {
+      // invalid/expired token — treat as a guest, don't error
+    }
+    next();
+  });

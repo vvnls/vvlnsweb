@@ -17,6 +17,7 @@ export default function Checkout() {
   const items = useCartStore((s) => s.items);
   const clear = useCartStore((s) => s.clear);
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
   const [address, setAddress] = useState({ name: '', phone: '', line1: '', line2: '', city: '', state: '', pincode: '' });
   const [method, setMethod] = useState('cod');
   const [error, setError] = useState('');
@@ -44,13 +45,13 @@ export default function Checkout() {
 
     try {
       if (method === 'cod') {
-        const res = await createOrder({ items: orderItems, shippingAddress: address, paymentMethod: 'cod' });
+        const res = await createOrder({ email, items: orderItems, shippingAddress: address, paymentMethod: 'cod' });
         clear();
-        navigate(`/order-success/${res.order._id}`);
+        navigate(`/order-success/${res.order._id}`, { state: { order: res.order } });
         return;
       }
 
-      const res = await createOrder({ items: orderItems, shippingAddress: address, paymentMethod: 'razorpay' });
+      const res = await createOrder({ email, items: orderItems, shippingAddress: address, paymentMethod: 'razorpay' });
       const ok = await loadRazorpayScript();
       if (!ok) throw new Error('Could not load payment gateway. Check your connection.');
 
@@ -63,14 +64,13 @@ export default function Checkout() {
         handler: async (response) => {
           try {
             const verifyRes = await verifyPayment({
-              items: orderItems,
-              shippingAddress: address,
+              email, items: orderItems, shippingAddress: address,
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             });
             clear();
-            navigate(`/order-success/${verifyRes.order._id}`);
+            navigate(`/order-success/${verifyRes.order._id}`, { state: { order: verifyRes.order } });
           } catch (err) {
             setError(err.response?.data?.message || 'Payment succeeded but order creation failed. Contact support.');
           } finally {
@@ -78,7 +78,7 @@ export default function Checkout() {
           }
         },
         modal: { ondismiss: reset },
-        prefill: { name: address.name, contact: address.phone },
+        prefill: { name: address.name, email, contact: address.phone },
         theme: { color: '#4f7d2c' },
       });
       rzp.on('payment.failed', () => { setError('Payment failed. Please try again.'); reset(); });
@@ -97,7 +97,8 @@ export default function Checkout() {
     <section className="sec">
       <div className="w checkout-grid">
         <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12 }}>
-          <div className="sh"><h3>Shipping address</h3></div>
+          <div className="sh"><h3>Contact & shipping</h3></div>
+          <input required type="email" placeholder="Email address (for order confirmation)" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input required name="name" placeholder="Full name" value={address.name} onChange={onChange} />
           <input required name="phone" placeholder="Mobile number" value={address.phone} onChange={onChange} />
           <input required name="line1" placeholder="Address line 1" value={address.line1} onChange={onChange} />
@@ -126,38 +127,25 @@ export default function Checkout() {
           </button>
         </form>
 
-        <div style={{ fontSize:16,}}>
+        <div>
           <div className="sh"><h3>Order summary</h3></div>
           {list.map((i) => (
             <div key={`${i.product._id}:${i.variant.label}`} className="bill-row">
-              <span>{i.product.title} ({i.variant.label}) × {i.qty} = </span>
+              <span>{i.product.title} ({i.variant.label}) × {i.qty}</span>
               <span>₹{i.variant.price * i.qty}</span>
             </div>
           ))}
-
-          <div className="bill-row"><span>Subtotal =</span><span> ₹{subtotal}</span></div>
-
+          <div className="bill-row"><span>Subtotal</span><span>₹{subtotal}</span></div>
           <div className="bill-row">
-            <span>Shipping =</span>
-            {qualifiesFreeShipping ? <span className="bill-free">Free</span> : <span> ₹{shippingFee}</span>}
+            <span>Shipping</span>
+            {qualifiesFreeShipping ? <span className="bill-free">Free</span> : <span>₹{shippingFee}</span>}
           </div>
-
           {method === 'cod' && (
-            <div className="bill-row">
-              <span>Cash on Delivery charge =</span>
-              <span> ₹{codCharge}</span>
-            </div>
+            <div className="bill-row"><span>Cash on Delivery charge</span><span>₹{codCharge}</span></div>
           )}
-
-          {qualifiesFreeShipping && (
-            <p className="bill-savings">You saved ₹{SITE.shippingFee} with free shipping on this order!</p>
-          )}
-
-          <div className="bill-total"><span>Total = </span><span>₹{total}</span></div> <br /> <br />
-          {!qualifiesFreeShipping && (
-            <p className="bill-hint" style={{ color: 'var(--g)' }}>Add ₹{SITE.freeShippingAbove - subtotal} more to unlock free shipping.</p>
-          )}
-
+          {qualifiesFreeShipping && <p className="bill-savings">You saved ₹{SITE.shippingFee} with free shipping on this order!</p>}
+          {!qualifiesFreeShipping && <p className="bill-hint">Add ₹{SITE.freeShippingAbove - subtotal} more to unlock free shipping.</p>}
+          <div className="bill-total"><span>Total</span><span>₹{total}</span></div>
         </div>
       </div>
     </section>

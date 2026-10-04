@@ -17,11 +17,17 @@ const items = z.array(z.object({
 })).min(1, 'Cart is empty');
 
 export const createOrderSchema = z.object({
-  body: z.object({ items, shippingAddress: address, paymentMethod: z.enum(['cod', 'razorpay']) }),
+  body: z.object({
+    email: z.string().trim().toLowerCase().email('Enter a valid email'),
+    items,
+    shippingAddress: address,
+    paymentMethod: z.enum(['cod', 'razorpay']),
+  }),
 });
 
 export const verifyPaymentSchema = z.object({
   body: z.object({
+    email: z.string().trim().toLowerCase().email('Enter a valid email'),
     items,
     shippingAddress: address,
     razorpay_order_id: z.string(),
@@ -29,7 +35,6 @@ export const verifyPaymentSchema = z.object({
     razorpay_signature: z.string(),
   }),
 });
-
 const trackingUrl = z.string().trim().max(300)
   .refine((u) => u === '' || /^https:\/\/\S+$/.test(u), 'Tracking link must start with https://');
 

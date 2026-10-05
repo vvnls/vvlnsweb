@@ -163,7 +163,7 @@ export const REVIEWS = {
     { name: 'mukesh.', rating: 4, comment: 'Loved it. Ordering a bigger pack next time.' },
     { name: 'Rohit sharma.', rating: 4, comment: 'Solid quality, matches the description on the site.' },
   ],
-  'vedvihwa-naturals-5-herbs-combination': [
+  'vedvishwa-naturals-5-herbs-combination': [
     { name: 'Priyanka J.', rating: 5, comment: 'Packaging was neat and the herbs smelled fresh. Arrived in three days.' },
     { name: 'arun nayar.', rating: 5, comment: 'Genuine quality and honest pricing. I now order all my herbs here.' },
     { name: 'sahana.', rating: 4, comment: 'Fresh and well packed. Will order again.' },
@@ -193,7 +193,7 @@ export const REVIEWS = {
     { name: 'mukesh.', rating: 4, comment: 'Loved it. Ordering a bigger pack next time.' },
     { name: 'Rohit sharma.', rating: 4, comment: 'Solid quality, matches the description on the site.' },
   ],
-  'edvishwa-naturals-herbal-shampoo-powder': [
+  'vedvishwa-naturals-herbal-shampoo-powder': [
     { name: 'Priyanka J.', rating: 5, comment: 'Packaging was neat and the herbs smelled fresh. Arrived in three days.' },
     { name: 'arun nayar.', rating: 5, comment: 'Genuine quality and honest pricing. I now order all my herbs here.' },
     { name: 'sahana.', rating: 4, comment: 'Fresh and well packed. Will order again.' },

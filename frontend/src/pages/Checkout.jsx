@@ -135,17 +135,17 @@ export default function Checkout() {
               <span>₹{i.variant.price * i.qty}</span>
             </div>
           ))}
-          <div className="bill-row"><span>Subtotal</span><span>₹{subtotal}</span></div>
+          <div className="bill-row"><span>Subtotal = </span><span>₹{subtotal}</span></div>
           <div className="bill-row">
-            <span>Shipping</span>
+            <span>Shipping = </span>
             {qualifiesFreeShipping ? <span className="bill-free">Free</span> : <span>₹{shippingFee}</span>}
           </div>
           {method === 'cod' && (
-            <div className="bill-row"><span>Cash on Delivery charge</span><span>₹{codCharge}</span></div>
+            <div className="bill-row"><span>Cash on Delivery charge = </span><span>₹{codCharge}</span></div>
           )}
           {qualifiesFreeShipping && <p className="bill-savings">You saved ₹{SITE.shippingFee} with free shipping on this order!</p>}
           {!qualifiesFreeShipping && <p className="bill-hint">Add ₹{SITE.freeShippingAbove - subtotal} more to unlock free shipping.</p>}
-          <div className="bill-total"><span>Total</span><span>₹{total}</span></div>
+          <div className="bill-total"><span>Total = </span><span>₹{total}</span></div>
         </div>
       </div>
     </section>
